@@ -208,74 +208,102 @@
       animation: fadeUp 1s ease 0.8s both;
     }
 
-    /* Collage */
-    .collage {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 10px;
+    /* Slideshow */
+    .slideshow {
+      position: relative;
       max-width: 480px;
       margin: 0 auto 2rem;
-      animation: fadeUp 1s ease 0.3s both;
-    }
-    .collage-item {
-      position: relative;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      border: 1px solid rgba(201,168,76,0.25);
-      background: linear-gradient(135deg, #0a0e2a, #1a2a6c);
-      aspect-ratio: 1 / 1;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(201,168,76,0.3);
+      box-shadow: 0 12px 50px rgba(0,0,0,0.6);
+      animation: fadeUp 1s ease 0.3s both;
+      background: #060916;
     }
-    .collage-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 12px 40px rgba(201,168,76,0.2);
-    }
-    /* Make picture3 and picture4 slightly taller for variety */
-    .collage-item:nth-child(3),
-    .collage-item:nth-child(4) {
-      aspect-ratio: 4 / 3;
-    }
-    .collage-item img {
+    .slide {
+      display: none;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide.active { display: flex; }
+    .slide img {
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
       display: block;
     }
-    .collage-placeholder {
+    .slide-placeholder {
       width: 100%;
-      height: 100%;
+      height: 320px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.6rem;
       color: rgba(255,255,255,0.25);
+      background: linear-gradient(135deg, #0a0e2a, #1a2a6c);
     }
-    .collage-placeholder span {
-      font-size: 2rem;
-    }
-    .collage-placeholder p {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
+    .slide-placeholder span { font-size: 3rem; }
+    .slide-placeholder p {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
     }
-    /* Gold corner accent on each cell */
-    .collage-item::after {
-      content: '';
+    /* Navigation */
+    .slide-nav {
       position: absolute;
-      top: 0; left: 0;
-      width: 30px; height: 30px;
-      border-top: 2px solid rgba(201,168,76,0.5);
-      border-left: 2px solid rgba(201,168,76,0.5);
-      border-radius: 10px 0 0 0;
-      pointer-events: none;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 10;
+      user-select: none;
     }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    .slide-nav:hover {
+      background: rgba(201,168,76,0.2);
+      transform: translateY(-50%) scale(1.1);
     }
+    .slide-prev { left: 10px; }
+    .slide-next { right: 10px; }
+    /* Dots */
+    .slide-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 0 12px;
+      background: rgba(0,0,0,0.3);
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+    /* Slide fade animation */
+    @keyframes slideFade {
+      from { opacity: 0; transform: scale(0.97); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .slide.active { animation: slideFade 0.5s ease both; }
 
     /* Birthday section */
     #birthday-section {
@@ -399,27 +427,34 @@
   <!-- Birthday -->
   <div id="birthday-section">
     <p class="bday-subtitle">✦ &nbsp; Today is the day &nbsp; ✦</p>
-    <div class="collage">
-      <!-- Replace 'picture1.jpg' etc. with Gianne's actual photo filenames -->
-      <div class="collage-item">
+    <div class="slideshow">
+      <div class="slide active">
         <img src="picture1.jpg" alt="Gianne 1"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="collage-placeholder" style="display:none;"><span>🌟</span><p>Picture 1</p></div>
+        <div class="slide-placeholder" style="display:none;"><span>🌟</span><p>Picture 1</p></div>
       </div>
-      <div class="collage-item">
+      <div class="slide">
         <img src="picture2.jpg" alt="Gianne 2"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="collage-placeholder" style="display:none;"><span>✨</span><p>Picture 2</p></div>
+        <div class="slide-placeholder" style="display:none;"><span>✨</span><p>Picture 2</p></div>
       </div>
-      <div class="collage-item">
+      <div class="slide">
         <img src="picture3.jpg" alt="Gianne 3"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="collage-placeholder" style="display:none;"><span>💫</span><p>Picture 3</p></div>
+        <div class="slide-placeholder" style="display:none;"><span>💫</span><p>Picture 3</p></div>
       </div>
-      <div class="collage-item">
+      <div class="slide">
         <img src="picture4.jpg" alt="Gianne 4"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="collage-placeholder" style="display:none;"><span>🤍</span><p>Picture 4</p></div>
+        <div class="slide-placeholder" style="display:none;"><span>🤍</span><p>Picture 4</p></div>
+      </div>
+      <button class="slide-nav slide-prev" onclick="changeSlide(-1)">&#8249;</button>
+      <button class="slide-nav slide-next" onclick="changeSlide(1)">&#8250;</button>
+      <div class="slide-dots">
+        <div class="dot active" onclick="goToSlide(0)"></div>
+        <div class="dot" onclick="goToSlide(1)"></div>
+        <div class="dot" onclick="goToSlide(2)"></div>
+        <div class="dot" onclick="goToSlide(3)"></div>
       </div>
     </div>
     <h1 class="bday-title">
@@ -523,6 +558,7 @@
       if (bSection.style.display === 'none' || !bSection.style.display) {
         bSection.style.display = 'block';
         launchConfetti();
+        startSlideshow();
       }
       return;
     }
@@ -539,13 +575,42 @@
     updatePop('seconds', pad(seconds));
   }
 
+  // ---- Slideshow ----
+  let currentSlide = 0;
+  let slideshowTimer = null;
+
+  function goToSlide(n) {
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+    if (!slides.length) return;
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+  }
+
+  function changeSlide(dir) {
+    goToSlide(currentSlide + dir);
+    resetAutoSlide();
+  }
+
+  function resetAutoSlide() {
+    if (slideshowTimer) clearInterval(slideshowTimer);
+    slideshowTimer = setInterval(() => goToSlide(currentSlide + 1), 4000);
+  }
+
+  function startSlideshow() {
+    resetAutoSlide();
+  }
+
   // PREVIEW MODE: show birthday screen immediately
   document.getElementById('countdown-section').style.display = 'none';
   document.getElementById('birthday-section').style.display = 'block';
   launchConfetti();
+  startSlideshow();
 
-  // tick();
-  // setInterval(tick, 1000);
+  // end preview
 </script>
 </body>
 </html>
